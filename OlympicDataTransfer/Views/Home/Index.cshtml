@@ -1,0 +1,50 @@
+﻿@model CountryListViewModel
+@{
+    ViewBag.Title = "Index";
+}
+
+<h1>Countries</h1>
+<div class="wrapper">
+    <nav id="sidebar">
+        <div class="sidebar-header">
+            <h3></h3>
+        </div>
+
+        <ul>
+            <h5><a asp-controller="Home" asp-action="Index">View All Countries</a></h5>
+            <h3>Game:</h3>
+            <li><a asp-controller="Home" asp-action="Index" asp-route-activeGame="win">Winter Olympics</a></li>
+            <li><a asp-controller="Home" asp-action="Index" asp-route-activeGame="sum">Summer Olympics</a></li>
+            <li><a asp-controller="Home" asp-action="Index" asp-route-activeGame="par">Paralympics</a></li>
+            <li><a asp-controller="Home" asp-action="Index" asp-route-activeGame="yth">Youth Olympic Games</a></li>
+            <h3>Category:</h3>
+            <li><h5><a asp-controller="Home" asp-action="Index" asp-route-activeCat="in">All Indoor</a></h5></li>
+            <ul style="padding-left:15px">
+                <li style="padding-left:10px"><a asp-controller="Home" asp-action="Index" asp-route-activeCat="in" asp-route-activeGame="win">Indoor Winter Olympics</a></li>
+                <li style="padding-left:10px"><a asp-controller="Home" asp-action="Index" asp-route-activeCat="in" asp-route-activeGame="sum">Indoor Summer Olympics</a></li>
+                <li style="padding-left:10px"><a asp-controller="Home" asp-action="Index" asp-route-activeCat="in" asp-route-activeGame="par">Indoor Paralympics</a></li>
+                <li style="padding-left:10px"><a asp-controller="Home" asp-action="Index" asp-route-activeCat="in" asp-route-activeGame="yth">Indoor Youth Olympics</a></li>
+            </ul>
+            <li><h5><a asp-controller="Home" asp-action="Index" asp-route-activeCat="out">All Outdoor</a></h5></li>
+            <ul style="padding-left:15px">
+                <li style="padding-left:10px"><a asp-controller="Home" asp-action="Index" asp-route-activeCat="out" asp-route-activeGame="win">Outdoor Winter Olympics</a></li>
+                <li style="padding-left:10px"><a asp-controller="Home" asp-action="Index" asp-route-activeCat="out" asp-route-activeGame="sum">Outdoor Summer Olympics</a></li>
+                <li style="padding-left:10px"><a asp-controller="Home" asp-action="Index" asp-route-activeCat="out" asp-route-activeGame="par">Outdoor Paralympics</a></li>
+                <li style="padding-left:10px"><a asp-controller="Home" asp-action="Index" asp-route-activeCat="out" asp-route-activeGame="yth">Outdoor Youth Olympics</a></li>
+            </ul>
+        </ul>
+
+    </nav>
+</div>
+<div>
+    @{
+        foreach (Country country in Model.Countries)
+        {
+            <li style="text-align:center">
+                <img src="~/Flags/@country.FlagImage" alt="@country.CountryName"
+                     title="@country.CountryName | @country.Game.GameName | @country.Category.CatName" />
+            </li>
+        }
+    }
+</div>
+
