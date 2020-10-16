@@ -40,10 +40,12 @@
     @{
         foreach (Country country in Model.Countries)
         {
+        <a asp-action="Details" asp-route-id="@country.CountryID">
             <li style="text-align:center">
                 <img src="~/Flags/@country.FlagImage" alt="@country.CountryName"
                      title="@country.CountryName | @country.Game.GameName | @country.Category.CatName" />
             </li>
+        </a>
         }
     }
 </div>

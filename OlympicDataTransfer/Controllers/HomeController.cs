@@ -20,6 +20,10 @@ namespace OlympicDataTransfer.Controllers
         }
         public ViewResult Index(string activeGame = "all", string activeCat = "all")
         {
+            var session = new CountrySession(HttpContext.Session);
+            session.SetActiveGame(activeGame);
+            session.SetActiveCat(activeCat);
+
             var model = new CountryListViewModel
             {
                 ActiveGame = activeGame,
@@ -50,9 +54,47 @@ namespace OlympicDataTransfer.Controllers
             return View(model);
         }
 
+        public ViewResult Details(string id)
+        {
+            var session = new CountrySession(HttpContext.Session);
+            var model = new CountryViewModel
+            {
+                Country = context.Countries
+                .Include(c => c.Game)
+                .Include(c => c.Category)
+                .FirstOrDefault(c => c.CountryID == id),
+                ActiveGame = session.GetActiveGame(),
+                ActiveCat = session.GetActiveCat()
+            };
+            return View(model);
+        }
+
         public IActionResult Privacy()
         {
             return View();
+        }
+
+        [HttpPost]
+        public RedirectToActionResult Add(CountryViewModel model)
+        {
+            model.Country = context.Countries
+                .Include(c => c.Game)
+                .Include(c => c.Category)
+                .Where(c => c.CountryID == model.Country.CountryID)
+                .FirstOrDefault();
+
+            var session = new CountrySession(HttpContext.Session);
+            var countries = session.GetMyCountries();
+            countries.Add(model.Country);
+            session.SetMyCountries(countries);
+
+            return RedirectToAction("Index",
+                new
+                {
+                    ActiveGame = session.GetActiveGame(),
+                    ActiveCat = session.GetActiveCat()
+                });
+
         }
     }
 }

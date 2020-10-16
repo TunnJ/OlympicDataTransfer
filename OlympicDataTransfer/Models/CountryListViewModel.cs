@@ -3,11 +3,9 @@ using System.Collections.Generic;
 
 namespace OlympicDataTransfer.Models
 {
-    public class CountryListViewModel
+    public class CountryListViewModel : CountryViewModel
     {
         public List<Country> Countries {get; set;}
-        public String ActiveGame { get; set; }
-        public String ActiveCat { get; set; }
 
         private List<Game> games;
         public List<Game> Games
