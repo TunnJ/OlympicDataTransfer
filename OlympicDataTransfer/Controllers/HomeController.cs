@@ -18,41 +18,6 @@ namespace OlympicDataTransfer.Controllers
         {
             context = ctx;
         }
-        public ViewResult Index(string activeGame = "all", string activeCat = "all")
-        {
-            var session = new CountrySession(HttpContext.Session);
-            session.SetActiveGame(activeGame);
-            session.SetActiveCat(activeCat);
-
-            var model = new CountryListViewModel
-            {
-                ActiveGame = activeGame,
-                ActiveCat = activeCat,
-                Games = context.Games.ToList(),
-                Categories = context.Categories.ToList()
-            };
-
-            IQueryable<Country> query = context.Countries;
-            if(activeGame != "all")
-            {
-                query = query.Where(
-                    c => c.Game.GameID.ToLower() == activeGame.ToLower()
-                    );
-            }
-
-            if(activeCat != "all")
-            {
-                query = query.Where(
-                    c => c.Category.CategoryID.ToLower() == activeCat.ToLower()
-                    );
-            }
-
-            ViewBag.gameRoute = activeGame;
-            ViewBag.catRoute = activeCat;
-            query = query.OrderBy(country => country.CountryName);
-            model.Countries = query.ToList();
-            return View(model);
-        }
 
         public ViewResult Details(string id)
         {
@@ -95,6 +60,33 @@ namespace OlympicDataTransfer.Controllers
                     ActiveCat = session.GetActiveCat()
                 });
 
+        }
+
+        public IActionResult Index(CountryListViewModel model)
+        {
+            model.Games = context.Games.ToList();
+            model.Categories = context.Categories.ToList();
+            string activeGame = model.ActiveGame;
+            string activeCat = model.ActiveCat;
+
+            IQueryable<Country> query = context.Countries;
+
+            if (activeGame != "all")
+            {
+                query = query.Where(
+                    c => c.Game.GameID.ToLower() == activeGame.ToLower()
+                    );
+            }
+
+            if (activeCat != "all")
+            {
+                query = query.Where(
+                    c => c.Category.CategoryID.ToLower() == activeCat.ToLower()
+                    );
+            }
+
+            model.Countries = query.ToList();
+            return View(model);
         }
     }
 }
